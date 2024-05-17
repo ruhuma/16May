@@ -10,10 +10,10 @@ function DataViewer() {
   const [selectedDatabase, setSelectedDatabase] = useState('');
   const [tables, setTables] = useState([]);
   const [selectedTable, setSelectedTable] = useState('');
-  
+
   useEffect(() => {
     // Fetch list of databases
-    fetch('http://65.1.2.39:8000/databases')
+    fetch(`${process.env.REACT_APP_API_URL}/databases`)
       .then(response => response.json())
       .then(data => {
         // Extract the databases array from the response data and set it in state
@@ -27,7 +27,7 @@ function DataViewer() {
 // Fetch tables for the selected database
 useEffect(() => {
   if (selectedDatabase) {
-    fetch(`http://65.1.2.39:8000/tables/${selectedDatabase}`)
+    fetch(`${process.env.REACT_APP_API_URL}/tables/${selectedDatabase}`)
       .then(response => response.json())
       .then(data => {
         setTables(data.tables);
@@ -47,13 +47,11 @@ const handleDatabaseChange = (event) => {
 const handleTableChange = (event) => {
   setSelectedTable(event.target.value);
 };
-
-
  
   useEffect(() => {
     // Check if both selectedDatabase and selectedTable have values
   if (selectedDatabase && selectedTable) {
-    fetch('http://65.1.2.39:8000/scan', {
+    fetch(`${process.env.REACT_APP_API_URL}/scan`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
